@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 
 void main() {
   runApp(const MyApp());
@@ -44,12 +43,7 @@ class MyHomePage extends StatelessWidget {
 
   final String title;
 
-  void _refreshList() {
-    http.get(Uri.parse('https://jsonplaceholder.typicode.com/albums'));
-    http.get(Uri.parse('http://127.0.0.1:5000/profiles'));
-    //http.get(Uri.parse('http://localhost:5000/profiles'));
-    debugPrint("tabmer");
-  }
+  void _refreshList() {}
 
   @override
   Widget build(BuildContext context) {
@@ -59,41 +53,7 @@ class MyHomePage extends StatelessWidget {
         // the App.build method, and use it to set our appbar title.
         title: Text(title),
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: ListView.builder(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-
-          itemCount: 10,
-          itemBuilder: (context, index) => Card(
-            elevation: 6,
-            margin: const EdgeInsets.all(10),
-            child: ListTile(
-              leading: CircleAvatar(
-                backgroundColor: Colors.purple,
-                child: Text(index.toString()),
-              ),
-              title: Text("Salut zob $index"),
-              // subtitle: Text(dummyList[index]["subtitle"]),
-              // trailing: const Icon(Icons.add_a_photo),
-            ),
-          ),
-        ),
-      ),
+      body: _buildProfileList(),
       floatingActionButton: FloatingActionButton(
         onPressed: _refreshList,
         tooltip: 'Call API',
@@ -101,4 +61,45 @@ class MyHomePage extends StatelessWidget {
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
+
+  Widget _buildProfileList() {
+    return const Center(
+        child: Text(
+      'No result',
+      style: TextStyle(fontSize: 25),
+    ));
+  }
 }
+
+
+// ListView.builder(
+//         // Column is also a layout widget. It takes a list of children and
+//         // arranges them vertically. By default, it sizes itself to fit its
+//         // children horizontally, and tries to be as tall as its parent.
+//         //
+//         // Invoke "debug painting" (press "p" in the console, choose the
+//         // "Toggle Debug Paint" action from the Flutter Inspector in Android
+//         // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
+//         // to see the wireframe for each widget.
+//         //
+//         // Column has various properties to control how it sizes itself and
+//         // how it positions its children. Here we use mainAxisAlignment to
+//         // center the children vertically; the main axis here is the vertical
+//         // axis because Columns are vertical (the cross axis would be
+//         // horizontal).
+
+//         itemCount: 10,
+//         itemBuilder: (context, index) => Card(
+//           elevation: 6,
+//           margin: const EdgeInsets.all(10),
+//           child: ListTile(
+//             leading: CircleAvatar(
+//               backgroundColor: Colors.purple,
+//               child: Text(index.toString()),
+//             ),
+//             title: Text("Salut zob $index"),
+//             // subtitle: Text(dummyList[index]["subtitle"]),
+//             // trailing: const Icon(Icons.add_a_photo),
+//           ),
+//         ),
+//       ),
