@@ -1,10 +1,13 @@
 import flask
 from flask import request, jsonify
+from flask_cors import CORS
 
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
+CORS(app)
 
 first_names = ['Henriette', 'Jose', 'Amandine', 'Jonathan', 'Herve', 'Antoine', 'Elisabeth']
+json_first_names = [{'name': name} for name in first_names]
 
 @app.route('/hello', methods=['GET'])
 def hello_world():
@@ -18,9 +21,9 @@ def home():
 def profiles():
     if 'id' in request.args:
         id = int(request.args['id'])
-        profiles = [first_names[id % len(first_names)]]
+        profiles = json_first_names[id % len(first_names)]
     else:
-        profiles = first_names
+        profiles = json_first_names
     
     return(jsonify(profiles))
 
