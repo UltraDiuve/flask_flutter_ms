@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:front_flutter/bloc/bloc_provider.dart';
+import 'package:front_flutter/data/profile.dart';
+import 'package:front_flutter/profile_list_bloc.dart';
+
+import 'data/api_client.dart';
 
 void main() {
   runApp(const MyApp());
@@ -10,21 +15,15 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'API Call',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.purple,
+    return BlocProvider(
+      bloc: ProfileListBloc(),
+      child: MaterialApp(
+        title: 'API Call',
+        theme: ThemeData(
+          primarySwatch: Colors.purple,
+        ),
+        home: const MyHomePage(title: 'API Call'),
       ),
-      home: const MyHomePage(title: 'API Call'),
     );
   }
 }
@@ -32,45 +31,69 @@ class MyApp extends StatelessWidget {
 class MyHomePage extends StatelessWidget {
   const MyHomePage({Key? key, required this.title}) : super(key: key);
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
   final String title;
-
-  void _refreshList() {}
 
   @override
   Widget build(BuildContext context) {
+    final bloc = BlocProvider.of<ProfileListBloc>(context);
+
     return Scaffold(
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
         title: Text(title),
       ),
-      body: _buildProfileList(),
+      body: _buildProfileList(bloc),
       floatingActionButton: FloatingActionButton(
-        onPressed: _refreshList,
+        onPressed: () {
+          // debugPrint("Button clicked...");
+          // debugPrint(APIClient().fetchProfiles().toString());
+          bloc.callTrigger.add(true);
+        },
         tooltip: 'Call API',
         child: const Icon(Icons.refresh),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      ),
     );
   }
 
-  Widget _buildProfileList() {
-    return const Center(
-        child: Text(
-      'No result',
-      style: TextStyle(fontSize: 25),
-    ));
+  Widget _buildProfileList(ProfileListBloc bloc) {
+    return StreamBuilder<List<Profile>?>(
+        stream: bloc.profilesStream,
+        builder: (context, snapshot) {
+          final results = snapshot.data;
+          if (results == null) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (results.isEmpty) {
+            return const Center(
+                child: Text(
+              'No result',
+              style: TextStyle(fontSize: 25),
+            ));
+          } else {
+            return _buildPopulatedProfileList(results);
+          }
+        });
   }
 }
 
+Widget _buildPopulatedProfileList(List<Profile> results) {
+  return ListView.builder(
+    itemCount: results.length,
+    itemBuilder: (context, index) {
+      return Card(
+          elevation: 6,
+          margin: const EdgeInsets.all(5),
+          child: ListTile(
+            leading: CircleAvatar(
+              backgroundColor: Colors.purple,
+              child: Text(index.toString()),
+            ),
+            title: Text(results[index].name),
+            onTap: () {
+              debugPrint(results[index].name);
+            },
+          ));
+    },
+  );
+}
 
 // ListView.builder(
 //         // Column is also a layout widget. It takes a list of children and

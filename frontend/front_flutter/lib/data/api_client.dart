@@ -1,5 +1,6 @@
 import 'dart:convert' show json;
 
+import 'package:flutter/material.dart';
 import 'package:front_flutter/data/profile.dart';
 
 import 'package:http/http.dart' as http;
@@ -9,7 +10,9 @@ class APIClient {
 
   Future<List<Profile>?> fetchProfiles() async {
     final response = await http.get(Uri.parse('$_host/profiles'));
-    final data = json.decode(response.body)['data'];
+    final data = json.decode(response.body);
+    // debugPrint(
+    //     data.map<Profile>(Profile.fromJson).toList(growable: false).toString());
     return data.map<Profile>(Profile.fromJson).toList(growable: false);
   }
 }
