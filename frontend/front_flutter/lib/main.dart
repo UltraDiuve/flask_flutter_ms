@@ -28,18 +28,23 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyHomePage extends StatelessWidget {
+class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     final bloc = BlocProvider.of<ProfileListBloc>(context);
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(title),
+        title: Text(widget.title),
       ),
       body: _buildProfileList(bloc),
       floatingActionButton: FloatingActionButton(
@@ -74,9 +79,9 @@ class MyHomePage extends StatelessWidget {
   }
 }
 
-Widget _buildPopulatedProfileList(List<Profile> results) {
+Widget _buildPopulatedProfileList(List<Profile> profiles) {
   return ListView.builder(
-    itemCount: results.length,
+    itemCount: profiles.length,
     itemBuilder: (context, index) {
       return Card(
           elevation: 6,
@@ -84,11 +89,11 @@ Widget _buildPopulatedProfileList(List<Profile> results) {
           child: ListTile(
             leading: CircleAvatar(
               backgroundColor: Colors.purple,
-              child: Text(index.toString()),
+              child: Text(profiles[index].id.toString()),
             ),
-            title: Text(results[index].name),
+            title: Text(profiles[index].name),
             onTap: () {
-              debugPrint(results[index].name);
+              debugPrint(profiles[index].name);
             },
           ));
     },
