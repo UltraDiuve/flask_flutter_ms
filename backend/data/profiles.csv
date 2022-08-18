@@ -1,7 +1,10 @@
-id,name,city
-1,Henriette,Paris
-2,Jose,Aix
-3,Amandine,Montpellier
-4,Jonathan,Toulouse
-5,Herve,Marseille
-6,Antoine,Ajaccio
+,Unnamed: 0.2,Unnamed: 0.1,Unnamed: 0,id,name,city
+0,0.0,0.0,0.0,1,Henriette,Paris
+1,1.0,1.0,1.0,2,Jose,Aix
+2,2.0,2.0,2.0,3,Amandine,Montpellier
+3,3.0,3.0,3.0,4,Jonathan,Toulouse
+4,4.0,4.0,4.0,5,Herve,Marseille
+5,5.0,5.0,5.0,6,Antoine,Ajaccio
+6,6.0,6.0,,7,Prénom 7,Ville 7
+7,7.0,,,8,Prénom 8,Ville 8
+8,,,,9,Prénom 9,Ville 9

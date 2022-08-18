@@ -21,29 +21,45 @@ json_first_names = [{'name': name} for name in first_names]
 # def home():
 #    return "<h1>home page</h1><p>Zobi ta race.</p>"
 
-@app.route('/profiles', methods=['GET'])
+@app.route('/profiles', methods=['GET', 'POST'])
 def profiles():
 
-    sleep(3)
+    if request.method == 'GET':
+        prof_json = return_all_profiles()
 
+        if 'id' in request.args:
+            id = int(request.args['id'])
+            profiles = prof_json[id % len(prof_json)]
+            # profiles = json_first_names[id % len(json_first_names)]
+        else:
+            profiles = prof_json
+            # profiles = json_first_names
+        
+        return(
+            jsonify(profiles)
+            # profiles
+            )
+    elif request.method == 'POST':
+        print("in post")
+        data = pd.read_csv('./data/profiles.csv')
+        new_id = data['id'].max() + 1
+        data.append(
+            {
+                'id': new_id,
+                'name': f"Prénom {new_id}",
+                'city': f"Ville {new_id}",
+            },
+            ignore_index=True).to_csv('./data/profiles.csv')
+        return(jsonify(return_all_profiles()))
+
+def return_all_profiles():
+    sleep(2)
     prof_json = json.loads(
         pd.read_csv(
             './data/profiles.csv',
         ).to_json(orient='records')
     )
-
-    if 'id' in request.args:
-        id = int(request.args['id'])
-        profiles = prof_json[id % len(prof_json)]
-        # profiles = json_first_names[id % len(json_first_names)]
-    else:
-        profiles = prof_json
-        # profiles = json_first_names
-    
-    return(
-        jsonify(profiles)
-        # profiles
-        )
+    return(prof_json)
 
 # @app.route('/person', methods=['GET', 'PUT', 'POST', 'DELETE'])
 # def person():

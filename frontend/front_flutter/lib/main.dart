@@ -3,7 +3,10 @@
 import 'package:flutter/material.dart';
 import 'package:front_flutter/bloc/bloc_provider.dart';
 import 'package:front_flutter/data/profile.dart';
-import 'package:front_flutter/profile_list_bloc.dart';
+import 'package:front_flutter/bloc/profile_list_bloc.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
+
+import 'UI/floating_action_buttons.dart';
 
 void main() {
   runApp(const MyApp());
@@ -42,24 +45,24 @@ class MyHomePage extends StatelessWidget {
       appBar: AppBar(
         title: Text(title),
       ),
-      body:
-          // RefreshIndicator(
-          //   onRefresh: (() {
-          //     bloc.callTrigger.add(true);
-          //     return Future(() => null);
-          //   }),
-          // child:
-          _buildProfileList(bloc),
-      // ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // debugPrint("Button clicked...");
-          // debugPrint(APIClient().fetchProfiles().toString());
-          bloc.callTrigger.add(true);
-        },
-        tooltip: 'Call API',
-        child: const Icon(Icons.refresh),
+      body: RefreshIndicator(
+        onRefresh: (() {
+          bloc.callTrigger.add('refresh');
+          return Future(() => null);
+        }),
+        child: _buildProfileList(bloc),
       ),
+      floatingActionButton: SingleOrMultipleFloatingActionButtons(
+          infos: _createActionButtonInfoList(bloc)),
+
+      // _onlyOnWeb(FloatingActionButton(
+      //   onPressed: () {
+      //     // debugPrint("Button clicked...");
+      //     // debugPrint(APIClient().fetchProfiles().toString());
+      //     bloc.callTrigger.add(true);
+      //   },
+      //   tooltip: 'Call API',
+      //   child: const Icon(Icons.refresh),
     );
   }
 
@@ -103,6 +106,47 @@ Widget _buildPopulatedProfileList(List<Profile> profiles) {
     },
   );
 }
+
+List<FloatingActionButtonInfo> _createActionButtonInfoList(
+    ProfileListBloc bloc) {
+  if (kIsWeb) {
+    return ([
+      FloatingActionButtonInfo(
+        label: 'Refresh',
+        icon: const Icon(Icons.refresh),
+        onPressed: () {
+          bloc.callTrigger.add('refresh');
+        },
+      ),
+      FloatingActionButtonInfo(
+        label: 'Add Profile',
+        icon: const Icon(Icons.add),
+        onPressed: () {
+          bloc.callTrigger.add('add');
+        },
+      ),
+    ]);
+  } else {
+    return ([
+      FloatingActionButtonInfo(
+        label: 'Add Profile',
+        icon: const Icon(Icons.add),
+        onPressed: () {
+          bloc.callTrigger.add('add');
+        },
+      ),
+    ]);
+  }
+}
+
+// Widget _onlyOnWeb(FloatingActionButton child) {
+//   if (kIsWeb) {
+//     return (child);
+//   } else {
+//     return (Container());
+//   }
+// }
+
 
 // ListView.builder(
 //         // Column is also a layout widget. It takes a list of children and
