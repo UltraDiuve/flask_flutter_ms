@@ -1,8 +1,10 @@
+from time import sleep
 import flask
 from flask import request, jsonify
 from flask_cors import CORS
 
 import pandas as pd
+import json
 
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
@@ -22,9 +24,13 @@ json_first_names = [{'name': name} for name in first_names]
 @app.route('/profiles', methods=['GET'])
 def profiles():
 
-    prof_json = pd.read_csv(
-        './data/profiles.csv',
-    ).to_json(orient='records')
+    sleep(3)
+
+    prof_json = json.loads(
+        pd.read_csv(
+            './data/profiles.csv',
+        ).to_json(orient='records')
+    )
 
     if 'id' in request.args:
         id = int(request.args['id'])
@@ -35,8 +41,8 @@ def profiles():
         # profiles = json_first_names
     
     return(
-        # jsonify(profiles)
-        profiles
+        jsonify(profiles)
+        # profiles
         )
 
 # @app.route('/person', methods=['GET', 'PUT', 'POST', 'DELETE'])

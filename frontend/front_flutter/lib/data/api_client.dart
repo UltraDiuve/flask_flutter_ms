@@ -1,6 +1,5 @@
 import 'dart:convert' show json;
 
-import 'package:flutter/material.dart';
 import 'package:front_flutter/data/profile.dart';
 
 import 'package:http/http.dart' as http;

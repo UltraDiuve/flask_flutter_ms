@@ -6,7 +6,7 @@ class BlocProvider<T extends Bloc> extends StatefulWidget {
   final Widget child;
   final T bloc;
 
-  BlocProvider({
+  const BlocProvider({
     Key? key,
     required this.bloc,
     required this.child,

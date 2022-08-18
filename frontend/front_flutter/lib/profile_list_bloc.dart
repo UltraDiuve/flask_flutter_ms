@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:rxdart/rxdart.dart';
 
 import 'bloc.dart';
 import 'data/api_client.dart';
@@ -11,8 +12,8 @@ class ProfileListBloc implements Bloc {
   late Stream<List<Profile>?> profilesStream;
 
   ProfileListBloc() {
-    profilesStream = _profileCallController.stream
-        .asyncMap((event) => _client.fetchProfiles());
+    profilesStream = _profileCallController.stream.startWith(true).switchMap(
+        (event) => _client.fetchProfiles().asStream().startWith(null));
   }
 
   @override

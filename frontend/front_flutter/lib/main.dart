@@ -1,9 +1,9 @@
+// import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:front_flutter/bloc/bloc_provider.dart';
 import 'package:front_flutter/data/profile.dart';
 import 'package:front_flutter/profile_list_bloc.dart';
-
-import 'data/api_client.dart';
 
 void main() {
   runApp(const MyApp());
@@ -28,25 +28,29 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyHomePage extends StatefulWidget {
+class MyHomePage extends StatelessWidget {
   const MyHomePage({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  @override
   Widget build(BuildContext context) {
     final bloc = BlocProvider.of<ProfileListBloc>(context);
+    // bloc.callTrigger.add(true);
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text(title),
       ),
-      body: _buildProfileList(bloc),
+      body:
+          // RefreshIndicator(
+          //   onRefresh: (() {
+          //     bloc.callTrigger.add(true);
+          //     return Future(() => null);
+          //   }),
+          // child:
+          _buildProfileList(bloc),
+      // ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           // debugPrint("Button clicked...");
