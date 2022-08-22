@@ -5,7 +5,7 @@ import 'package:front_flutter/data/profile.dart';
 import 'package:http/http.dart' as http;
 
 class APIClient {
-  final _host = 'http://piero-merguez.hd.free.fr:5000';
+  final _host = 'http://piero-merguez.hd.free.fr';
 
   Future<List<Profile>?> fetchProfiles() async {
     final response = await http.get(Uri.parse('$_host/profiles'));
@@ -25,6 +25,5 @@ class APIClient {
     );
     final data = json.decode(response.body);
     return data.map<Profile>(Profile.fromJson).toList(growable: false);
-    ;
   }
 }
