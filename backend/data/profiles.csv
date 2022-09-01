@@ -1,7 +1,10 @@
-,id,name,city
-0,1,Henriette,Paris
-1,2,Jose,Aix
-2,3,Amandine,Montpellier
-3,4,Jonathan,Toulouse
-4,5,Herve,Marseille
-5,6,Antoine,Ajaccio
+id,name,city
+1,Henriette,Paris
+2,Jose,Aix
+3,Amandine,Montpellier
+4,Jonathan,Toulouse
+5,Herve,Marseille
+6,Antoine,Ajaccio
+7,Prénom 7,Ville 7
+8,Prénom 8,Ville 8
+9,Prénom 9,Ville 9
