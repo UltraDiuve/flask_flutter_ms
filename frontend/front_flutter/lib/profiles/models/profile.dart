@@ -7,25 +7,31 @@ import 'package:profile_repository/profile_repository.dart'
 part 'profile.g.dart';
 
 @JsonSerializable()
-class Profile extends Equatable {
-  const Profile({
+class BlocProfile extends Equatable {
+  const BlocProfile({
     required this.id,
     required this.name,
     required this.city,
   });
 
-  factory Profile.fromJson(Map<String, dynamic> json) =>
-      _$ProfileAidantFromJson(json);
+  factory BlocProfile.fromJson(Map<String, dynamic> json) =>
+      _$BlocProfileFromJson(json);
 
-  factory Profile.fromRepository(profile_repository.Profile profile) {
-    return Profile(
+  factory BlocProfile.fromRepository(profile_repository.RepoProfile profile) {
+    return BlocProfile(
       name: profile.name,
       id: profile.id,
       city: profile.city,
     );
   }
 
-  Map<String, dynamic> toJson() => _$ProfileAidantToJson(this);
+  static const empty = BlocProfile(
+    id: -1,
+    name: 'EMPTY',
+    city: 'EMPTY',
+  );
+
+  Map<String, dynamic> toJson() => _$BlocProfileToJson(this);
 
   @override
   List<Object> get props => [id];

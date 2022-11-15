@@ -6,11 +6,11 @@ part of 'profile.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Profile _$ProfileAidantFromJson(Map<String, dynamic> json) => $checkedCreate(
+BlocProfile _$BlocProfileFromJson(Map<String, dynamic> json) => $checkedCreate(
       'ProfileAidant',
       json,
       ($checkedConvert) {
-        final val = Profile(
+        final val = BlocProfile(
           id: $checkedConvert('id', (v) => v as num),
           name: $checkedConvert('name', (v) => v as String),
           city: $checkedConvert('city', (v) => v as String),
@@ -19,7 +19,7 @@ Profile _$ProfileAidantFromJson(Map<String, dynamic> json) => $checkedCreate(
       },
     );
 
-Map<String, dynamic> _$ProfileAidantToJson(Profile instance) =>
+Map<String, dynamic> _$BlocProfileToJson(BlocProfile instance) =>
     <String, dynamic>{
       'name': instance.name,
       'id': instance.id,

@@ -6,11 +6,11 @@ part of 'profile.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Profile _$ProfileFromJson(Map<String, dynamic> json) => $checkedCreate(
+RepoProfile _$RepoProfileFromJson(Map<String, dynamic> json) => $checkedCreate(
       'Profile',
       json,
       ($checkedConvert) {
-        final val = Profile(
+        final val = RepoProfile(
           id: $checkedConvert('id', (v) => v as num),
           name: $checkedConvert('name', (v) => v as String),
           city: $checkedConvert('city', (v) => v as String),
@@ -19,7 +19,8 @@ Profile _$ProfileFromJson(Map<String, dynamic> json) => $checkedCreate(
       },
     );
 
-Map<String, dynamic> _$ProfileToJson(Profile instance) => <String, dynamic>{
+Map<String, dynamic> _$RepoProfileToJson(RepoProfile instance) =>
+    <String, dynamic>{
       'name': instance.name,
       'id': instance.id,
       'city': instance.city,

@@ -8,11 +8,11 @@ part of 'profile.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Profile _$ProfileFromJson(Map<String, dynamic> json) => $checkedCreate(
+ApiProfile _$ApiProfileFromJson(Map<String, dynamic> json) => $checkedCreate(
       'Profile',
       json,
       ($checkedConvert) {
-        final val = Profile(
+        final val = ApiProfile(
           id: $checkedConvert('id', (v) => v as num),
           name: $checkedConvert('name', (v) => v as String),
           city: $checkedConvert('city', (v) => v as String),

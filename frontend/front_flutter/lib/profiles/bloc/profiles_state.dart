@@ -13,11 +13,11 @@ extension ProfilesStatusX on ProfilesStatus {
 class ProfilesState extends Equatable {
   ProfilesState({
     this.status = ProfilesStatus.initial,
-    List<Profile>? profiles,
+    List<BlocProfile>? profiles,
   }) : profiles = profiles ?? List.empty();
 
   final ProfilesStatus status;
-  final List<Profile> profiles;
+  final List<BlocProfile> profiles;
 
   @override
   List<Object?> get props => [status, profiles];

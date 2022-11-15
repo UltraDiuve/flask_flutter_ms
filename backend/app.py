@@ -1,3 +1,4 @@
+from textwrap import indent
 from time import sleep
 import flask
 from flask import request, jsonify
@@ -8,6 +9,7 @@ import json
 
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
+app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 CORS(app)
 
 # first_names = ['Henriette', 'Jose', 'Amandine', 'Jonathan', 'Herve', 'Antoine', 'Elisabeth']
@@ -23,7 +25,6 @@ CORS(app)
 
 @app.route('/profiles', methods=['GET', 'POST'])
 def profiles():
-
     if request.method == 'GET':
         prof_json = return_all_profiles()
 
@@ -40,7 +41,6 @@ def profiles():
             # profiles
             )
     elif request.method == 'POST':
-        print("in post")
         data = pd.read_csv('./data/profiles.csv')
         new_id = data['id'].max() + 1
         to_append = pd.DataFrame(

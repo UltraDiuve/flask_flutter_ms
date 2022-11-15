@@ -2,38 +2,28 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:front_flutter/profiles/bloc/profiles_bloc.dart';
-import 'package:front_flutter/screens/profile_list_screen.dart';
+// import 'package:bloc/bloc.dart';
+// import 'package:front_flutter/profiles/bloc/profiles_bloc.dart';
+// import 'package:front_flutter/screens/profile_list_screen.dart';
 import 'package:profile_repository/profile_repository.dart';
+import 'package:authentication_repository/authentication_repository.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'app.dart';
+// import 'authentication/bloc/authentication_bloc.dart';
+import 'authentication/bloc_observer.dart';
+import 'firebase_options.dart';
 
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-  runApp(MyApp(profileRepository: ProfileRepository()));
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key, required ProfileRepository profileRepository})
-      : _profileRepository = profileRepository;
-
-  final ProfileRepository _profileRepository;
-
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return RepositoryProvider.value(
-      value: _profileRepository,
-      child: MaterialApp(
-        title: 'API Call',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
-        home: BlocProvider(
-          create: (context) => ProfilesBloc(
-              profileRepository: context.read<ProfileRepository>()),
-          child: const ProfileListPage(title: 'API Call'),
-        ),
-      ),
-    );
-  }
+  Bloc.observer = AuthenticationBlocObserver(); // in the example, but not used?
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  final authenticationRepository = AuthenticationRepository();
+  await authenticationRepository.user.first;
+  runApp(App(
+    profileRepository: ProfileRepository(),
+    authenticationRepository: AuthenticationRepository(),
+  ));
 }

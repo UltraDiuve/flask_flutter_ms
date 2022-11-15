@@ -4,19 +4,19 @@ import 'package:json_annotation/json_annotation.dart';
 part 'profile.g.dart';
 
 @JsonSerializable()
-class Profile extends Equatable {
-  const Profile({
+class RepoProfile extends Equatable {
+  const RepoProfile({
     required this.id,
     required this.name,
     required this.city,
   });
 
-  factory Profile.fromJson(Map<String, dynamic> json) =>
-      _$ProfileFromJson(json);
+  factory RepoProfile.fromJson(Map<String, dynamic> json) =>
+      _$RepoProfileFromJson(json);
 
-  Map<String, dynamic> toJson() => _$ProfileToJson(this);
+  Map<String, dynamic> toJson() => _$RepoProfileToJson(this);
 
-  static const empty = Profile(
+  static const empty = RepoProfile(
     id: -1,
     name: '',
     city: '',

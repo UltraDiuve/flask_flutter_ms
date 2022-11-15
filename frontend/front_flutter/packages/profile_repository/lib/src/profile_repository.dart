@@ -11,22 +11,22 @@ class ProfileRepository {
 
   final profile_api.ProfileApiClient _profileApiClient;
 
-  Future<List<Profile>?> getProfiles() async {
-    final List<profile_api.Profile>? apiProfiles =
+  Future<List<RepoProfile>?> getProfiles() async {
+    final List<profile_api.ApiProfile>? apiProfiles =
         await _profileApiClient.fetchProfiles();
     return apiProfiles?.map(_apiProfileToRepoProfile).toList();
   }
 
-  Profile _apiProfileToRepoProfile(profile_api.Profile apiProfile) {
-    return Profile(
+  RepoProfile _apiProfileToRepoProfile(profile_api.ApiProfile apiProfile) {
+    return RepoProfile(
       city: apiProfile.city,
       name: apiProfile.name,
       id: apiProfile.id,
     );
   }
 
-  Future<List<Profile>?> addProfile() async {
-    final List<profile_api.Profile>? apiProfiles =
+  Future<List<RepoProfile>?> addProfile() async {
+    final List<profile_api.ApiProfile>? apiProfiles =
         await _profileApiClient.postProfile();
     return apiProfiles?.map(_apiProfileToRepoProfile).toList();
   }

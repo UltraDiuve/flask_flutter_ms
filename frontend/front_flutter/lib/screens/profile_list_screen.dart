@@ -1,7 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:front_flutter/UI/floating_action_buttons.dart';
+import 'package:front_flutter/authentication/bloc/authentication_bloc.dart';
+import 'package:front_flutter/widgets/floating_action_buttons.dart';
 import 'package:front_flutter/profiles/bloc/profiles_bloc.dart';
 import 'package:front_flutter/profiles/models/profile.dart';
 // import 'package:front_flutter/bloc/bloc_provider.dart';
@@ -10,6 +11,11 @@ import 'package:front_flutter/profiles/models/profile.dart';
 
 class ProfileListPage extends StatefulWidget {
   const ProfileListPage({Key? key, required this.title}) : super(key: key);
+
+  static Page<void> page() => const MaterialPage<void>(
+          child: ProfileListPage(
+        title: "Profile list",
+      ));
 
   final String title;
 
@@ -23,18 +29,31 @@ class _ProfileListPageState extends State<ProfileListPage> {
     // final bloc = BlocProvider.of<ProfileListBloc>(context);
     // bloc.callTrigger.add(true);
 
-    return BlocConsumer<ProfilesBloc, ProfilesState>(
-      listener: (context, state) {
-        // TODO: implement a listener?
-      },
+    return BlocBuilder<ProfilesBloc, ProfilesState>(
       builder: (context, state) {
         return Scaffold(
             appBar: AppBar(
               title: Text(widget.title),
+              actions: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: GestureDetector(
+                    child: const Icon(
+                      Icons.logout,
+                      size: 26.0,
+                    ),
+                    onTap: () {
+                      context
+                          .read<AuthenticationBloc>()
+                          .add(AppLogoutRequested());
+                    },
+                  ),
+                ),
+              ],
             ),
             body: RefreshIndicator(
               onRefresh: (() {
-                context.read<ProfilesBloc>().add(ProfilesRefresh());
+                context.read<ProfilesBloc>().add(RefreshProfiles());
                 return Future(() => null);
               }),
               child: _buildProfileList(context, state),
@@ -85,7 +104,7 @@ class _ProfileListPageState extends State<ProfileListPage> {
   }
 }
 
-Widget _buildPopulatedProfileList(List<Profile> profiles) {
+Widget _buildPopulatedProfileList(List<BlocProfile> profiles) {
   return ListView.builder(
     itemCount: profiles.length,
     itemBuilder: (context, index) {
@@ -114,14 +133,14 @@ List<FloatingActionButtonInfo> _createActionButtonInfoList(
         label: 'Refresh',
         icon: const Icon(Icons.refresh),
         onPressed: () {
-          context.read<ProfilesBloc>().add(ProfilesRefresh());
+          context.read<ProfilesBloc>().add(RefreshProfiles());
         },
       ),
       FloatingActionButtonInfo(
         label: 'Add Profile',
         icon: const Icon(Icons.add),
         onPressed: () {
-          context.read<ProfilesBloc>().add(ProfilesRefresh());
+          context.read<ProfilesBloc>().add(CreateProfile());
         },
       ),
     ]);
@@ -131,7 +150,7 @@ List<FloatingActionButtonInfo> _createActionButtonInfoList(
         label: 'Add Profile',
         icon: const Icon(Icons.add),
         onPressed: () {
-          context.read<ProfilesBloc>().add(ProfilesRefresh());
+          context.read<ProfilesBloc>().add(CreateProfile());
         },
       ),
     ]);
