@@ -1,0 +1,5 @@
+id,name,photo_url,birth_date,gender,occupation,address_id
+1,Pierre,,19850427,M,employed
+2,Marc,,19850815,M,employed
+3,Daniele,,19570315,F,retired
+4,Jean-Marc,,19540101,M,retired
