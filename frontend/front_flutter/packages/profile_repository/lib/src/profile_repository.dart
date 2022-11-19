@@ -12,6 +12,7 @@ class ProfileRepository {
   final profile_api.ProfileApiClient _profileApiClient;
 
   Future<List<RepoProfile>?> getProfiles() async {
+    print("Repository fetching profiles...");
     final List<profile_api.ApiProfile>? apiProfiles =
         await _profileApiClient.fetchProfiles();
     return apiProfiles?.map(_apiProfileToRepoProfile).toList();

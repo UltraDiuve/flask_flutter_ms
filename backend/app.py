@@ -1,4 +1,3 @@
-from textwrap import indent
 from time import sleep
 import flask
 from flask import request, jsonify
@@ -12,16 +11,6 @@ app.config["DEBUG"] = True
 app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 CORS(app)
 
-# first_names = ['Henriette', 'Jose', 'Amandine', 'Jonathan', 'Herve', 'Antoine', 'Elisabeth']
-# json_first_names = [{'name': name} for name in first_names]
-
-# @app.route('/hello', methods=['GET'])
-# def hello_world():
-#    return jsonify(['Hello World!'])
-
-# @app.route('/', methods=['GET'])
-# def home():
-#    return "<h1>home page</h1><p>Zobi ta race.</p>"
 
 @app.route('/profiles', methods=['GET', 'POST'])
 def profiles():
@@ -35,7 +24,6 @@ def profiles():
         else:
             profiles = prof_json
             # profiles = json_first_names
-        
         return(
             jsonify(profiles)
             # profiles
@@ -60,6 +48,7 @@ def profiles():
         )
         return(jsonify(return_all_profiles()))
 
+
 def return_all_profiles():
     sleep(1)
     prof_json = json.loads(
@@ -69,9 +58,6 @@ def return_all_profiles():
     )
     return(prof_json)
 
-# @app.route('/person', methods=['GET', 'PUT', 'POST', 'DELETE'])
-# def person():
-#     pass
 
 if __name__ == '__main__':
     app.run()

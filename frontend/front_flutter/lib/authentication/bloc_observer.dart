@@ -1,7 +1,7 @@
 // ignore_for_file: avoid_print
 import 'package:bloc/bloc.dart';
 
-class AuthenticationBlocObserver extends BlocObserver {
+class AppBlocObserver extends BlocObserver {
   @override
   void onEvent(Bloc<dynamic, dynamic> bloc, Object? event) {
     super.onEvent(bloc, event);

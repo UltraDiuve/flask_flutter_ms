@@ -17,7 +17,12 @@ class ProfileApiClient {
   final http.Client _httpClient;
 
   Future<List<ApiProfile>?> fetchProfiles() async {
+    print("Start of API fetching profiles...");
+
     final response = await _httpClient.get(Uri.parse('$_baseUrl/profiles'));
+
+    print(
+        "End of API profiles fetching: ${response.body} ${response.statusCode}");
 
     if (response.statusCode != 200) {
       throw ProfilesFetchRequestFailure();

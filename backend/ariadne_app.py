@@ -1,12 +1,65 @@
-from ariadne import QueryType, graphql_sync, make_executable_schema
+from ariadne import QueryType, graphql_sync, make_executable_schema, gql
 from ariadne.constants import PLAYGROUND_HTML
 from flask import Flask, request, jsonify
+import pandas as pd
+import json
 
-type_defs = """
+type_defs = gql("""
     type Query {
         hello: String!
+        helpers: [Helper]
     }
-"""
+
+    type Helper {
+        # Those should be shared with Helpee (Person)
+        id: ID!
+        name: String!
+        photoUrl: String
+        birthDate: String!
+        gender: Gender!
+        occupation: Occupation
+        address: Address
+        # End of Helpee sharing (Person)
+        user_id: ID!
+        experience: Experience!
+        mentalLoad: MentalLoad!
+        helperBio: String!
+    }
+
+    enum Gender {
+        M
+        F
+        O
+    }
+
+    enum Occupation {
+        active
+        inactive
+        retired
+        student
+    }
+
+    enum Experience {
+        new
+        medium
+        experienced
+    }
+
+    enum MentalLoad {
+        low
+        medium
+        high
+    }
+
+    type Address {
+        longitude: String
+        latitude: String
+        number: String
+        street: String
+        zipCode: String
+        city: String
+    }
+""")
 
 query = QueryType()
 
@@ -16,6 +69,27 @@ def resolve_hello(_, info):
     request = info.context
     user_agent = request.headers.get("User-Agent", "Guest")
     return "Hello, %s!" % user_agent
+
+
+@query.field("helpers")
+def resolve_helpers(_, info):
+    # request = info.context
+    # user_agent = request.headers.get("User-Agent", "Guest")
+    person_df = pd.read_csv('./data/person.csv')
+    helper_df = pd.read_csv('./data/helper.csv')
+    response = json.loads(
+        person_df.merge(
+            helper_df,
+            left_on="id",
+            right_on="person_id",
+            how="right"
+        ).to_json(
+            orient="records"
+        )
+    )
+    print(response)
+    print(type(response))
+    return (response)
 
 
 schema = make_executable_schema(type_defs, query)
