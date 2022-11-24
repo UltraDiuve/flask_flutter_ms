@@ -1,3 +1,3 @@
-id,person_id,disease
-1,3,Maman poule
-2,4,Papa poulet
+helpee_id,name,photo_url,birth_date,gender,occupation,address_id,disease
+1,Daniele,,19570315,F,retired,2,Maman poule
+2,Jean-Marc,,19540101,M,retired,4,Papa poulet

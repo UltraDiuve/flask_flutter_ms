@@ -13,12 +13,12 @@ class ProfileApiClient {
   ProfileApiClient({http.Client? httpClient})
       : _httpClient = httpClient ?? http.Client();
 
-  static const _baseUrl = 'http://piero-merguez.hd.free.fr';
+  static const _baseUrl = 'http://127.0.0.1:5000';
   final http.Client _httpClient;
 
   Future<List<ApiProfile>?> fetchProfiles() async {
     print("Start of API fetching profiles...");
-
+    print(Uri.parse('$_baseUrl/profiles').toString());
     final response = await _httpClient.get(Uri.parse('$_baseUrl/profiles'));
 
     print(
