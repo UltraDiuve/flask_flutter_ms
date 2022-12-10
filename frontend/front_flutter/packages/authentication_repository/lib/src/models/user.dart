@@ -12,6 +12,7 @@ class User extends Equatable {
     this.email,
     this.name,
     this.photo,
+    this.jwt,
   });
 
   /// The current user's email address.
@@ -25,6 +26,9 @@ class User extends Equatable {
 
   /// Url for the current user's photo.
   final String? photo;
+
+  // JWT of the user
+  final String? jwt;
 
   /// Empty user which represents an unauthenticated user.
   static const empty = User(id: '');

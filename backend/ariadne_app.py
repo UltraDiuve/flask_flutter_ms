@@ -8,8 +8,6 @@ type_defs = gql("""
     type Query {
         hello: String!
         caregivers: [Caregiver]
-        helpees: [Helpee]
-        helpee: Helpee
     }
 
     type Caregiver {
@@ -27,7 +25,7 @@ type_defs = gql("""
         zipCode: String
         city: String
         # End of Helpee sharing (Person)
-        user_id: ID!
+        userId: ID!
         experience: Experience!
         mentalLoad: MentalLoad!
         helperBio: String!
@@ -47,6 +45,9 @@ type_defs = gql("""
         street: String
         zipCode: String
         city: String
+        relationship: String
+        since: String
+        helpeeBio: String
     }
 
     enum Gender {
@@ -87,44 +88,8 @@ type_defs = gql("""
 query = QueryType()
 
 
-@query.field("hello")
-def resolve_hello(_, info):
-    request = info.context
-    user_agent = request.headers.get("User-Agent", "Guest")
-    return "Hello, %s!" % user_agent
-
-
 @query.field("caregivers")
 def resolve_helpers(_, info):
-    print('helpers')
-    # caregiver_df = pd.read_csv('./data/caregiver.csv')
-    # helpee_df = pd.read_csv('./data/helpee.csv')
-    # address_df = pd.read_csv('./data/address.csv')
-    # merged_df = (
-    #     person_df.merge(
-    #         caregiver_df,
-    #         left_on="id",
-    #         right_on="person_id",
-    #         how="right",
-    #         suffixes=["_person", "_helper"]
-    #     ).merge(
-    #         address_df.rename(
-    #             {
-    #                 "id": "address_id"
-    #             },
-    #             axis=1,
-    #         ),
-    #         left_on="address_id",
-    #         right_on="address_id",
-    #         suffixes=["_helper", "_address"],
-    #     ).rename(
-    #         {
-    #             "id_person": "id",
-    #         },
-    #         axis=1,
-    #     )
-    # )
-    # response = merged_df.to_dict(orient="records")
     return(
         caregiver_address_df.merge(
             relationship_df,
@@ -149,51 +114,6 @@ def resolve_helpers(_, info):
         .rename({0: 'helpees'}, axis=1)
         .to_dict(orient="records")
     )
-
-
-@query.field("helpees")
-def resolve_helpees(obj, info):
-    print(obj)
-    print(type(obj))
-    return([{'name': 'prout'}])
-    # request = info.context
-    # user_agent = request.headers.get("User-Agent", "Guest")
-    # person_df = pd.read_csv('./data/person.csv')
-    # helper_df = pd.read_csv('./data/helper.csv')
-    # address_df = pd.read_csv('./data/address.csv')
-    # merged_df = (
-    #     person_df.merge(
-    #         helper_df,
-    #         left_on="id",
-    #         right_on="person_id",
-    #         how="right",
-    #         suffixes=["_person", "_helper"]
-    #     ).merge(
-    #         address_df.rename(
-    #             {
-    #                 "id": "address_id"
-    #             },
-    #             axis=1,
-    #         ),
-    #         left_on="address_id",
-    #         right_on="address_id",
-    #         suffixes=["_helper", "_address"],
-    #     ).rename(
-    #         {
-    #             "id_person": "id",
-    #         },
-    #         axis=1,
-    #     )
-    # )
-    # response = merged_df.to_dict(orient="records")
-    # return (response)
-
-
-@query.field("helpee")
-def resolve_helpee(obj, info):
-    print(obj)
-    print(type(obj))
-    return({'name': 'prout'})
 
 
 schema = make_executable_schema(
@@ -239,10 +159,13 @@ def graphql_server():
 
 if __name__ == "__main__":
 
-    caregiver_df = pd.read_csv('./data/caregiver.csv', dtype=str)
-    helpee_df = pd.read_csv('./data/helpee.csv', dtype=str)
-    address_df = pd.read_csv('./data/address.csv', dtype=str)
-    relationship_df = pd.read_csv('./data/relationship.csv', dtype=str)
+    caregiver_df = pd.read_csv('./data/caregiver.csv', dtype=str).fillna('')
+    helpee_df = pd.read_csv('./data/helpee.csv', dtype=str).fillna('')
+    address_df = pd.read_csv('./data/address.csv', dtype=str).fillna('')
+    relationship_df = (
+        pd.read_csv('./data/relationship.csv', dtype=str)
+        .fillna('')
+    )
 
     caregiver_address_df = (
         caregiver_df.merge(
@@ -264,7 +187,7 @@ if __name__ == "__main__":
     )
 
     helpee_columns = {
-        'helpee_id': 'helpee_id',
+        'helpee_id': 'id',
         'relationship': 'relationship',
         'since': 'since',
         'name_helpee': 'name',
@@ -283,7 +206,7 @@ if __name__ == "__main__":
     }
 
     caregiver_columns = {
-        'caregiver_id': 'caregiver_id',
+        'caregiver_id': 'id',
         'name_merged': 'name',
         'photo_url_merged': 'photo_url',
         'birth_date_merged': 'birth_date',

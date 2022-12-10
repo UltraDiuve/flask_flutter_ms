@@ -13,7 +13,7 @@ class ProfileApiClient {
   ProfileApiClient({http.Client? httpClient})
       : _httpClient = httpClient ?? http.Client();
 
-  static const _baseUrl = 'http://127.0.0.1:5000';
+  static const _baseUrl = 'http://192.168.0.1:5000/';
   final http.Client _httpClient;
 
   Future<List<ApiProfile>?> fetchProfiles() async {
