@@ -42,20 +42,6 @@ class App extends StatelessWidget {
         child: const AppView(),
       ),
     );
-
-    // return RepositoryProvider.value(
-    //   value: _profileRepository,
-    //   child: MaterialApp(
-    //     title: 'API Call',
-    //     theme: ThemeData(
-    //       primarySwatch: Colors.blue,
-    //     ),
-    //     home: const BlocProvider(
-    //       create: startProfilesBloc,
-    //       child: ProfileListPage(title: 'API Call'),
-    //     ),
-    //   ),
-    // );
   }
 }
 
