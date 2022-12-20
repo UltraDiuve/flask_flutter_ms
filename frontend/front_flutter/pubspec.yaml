@@ -34,6 +34,8 @@ dependencies:
     path: packages/profile_repository
   authentication_repository:
     path: packages/authentication_repository
+  elpmi_profile_repository:
+    path: packages/elpmi_profile_repository
   form_inputs:
     path: packages/form_inputs
   flutter_bloc: ^8.1.1

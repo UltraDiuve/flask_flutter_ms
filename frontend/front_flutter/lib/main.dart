@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 // import 'package:front_flutter/screens/profile_list_screen.dart';
 import 'package:profile_repository/profile_repository.dart';
 import 'package:authentication_repository/authentication_repository.dart';
+import 'package:elpmi_profile_repository/elpmi_profile_repository.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'app.dart';
@@ -25,5 +26,6 @@ Future<void> main() async {
   runApp(App(
     profileRepository: ProfileRepository(),
     authenticationRepository: AuthenticationRepository(),
+    elpmiProfileRepository: ElpmiProfileRepository(),
   ));
 }

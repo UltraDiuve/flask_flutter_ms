@@ -1,7 +1,9 @@
+import 'package:elpmi_profile_repository/elpmi_profile_repository.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:front_flutter/authentication/bloc/authentication_bloc.dart';
+import 'package:front_flutter/elpmi_profile/bloc/elpmi_profile_bloc.dart';
 import 'package:front_flutter/widgets/floating_action_buttons.dart';
 import 'package:front_flutter/profiles/bloc/profiles_bloc.dart';
 import 'package:front_flutter/profiles/models/profile.dart';
@@ -32,34 +34,79 @@ class _ProfileListPageState extends State<ProfileListPage> {
     return BlocBuilder<ProfilesBloc, ProfilesState>(
       builder: (context, state) {
         return Scaffold(
-            appBar: AppBar(
-              title: Text(widget.title),
-              actions: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: GestureDetector(
-                    child: const Icon(
-                      Icons.logout,
-                      size: 26.0,
-                    ),
-                    onTap: () {
-                      context
-                          .read<AuthenticationBloc>()
-                          .add(AppLogoutRequested());
-                    },
+          appBar: AppBar(
+            title: Text(widget.title),
+            actions: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: GestureDetector(
+                  child: const Icon(
+                    Icons.logout,
+                    size: 26.0,
                   ),
+                  onTap: () {
+                    context
+                        .read<AuthenticationBloc>()
+                        .add(AppLogoutRequested());
+                  },
+                ),
+              ),
+            ],
+          ),
+          body: RefreshIndicator(
+            onRefresh: (() {
+              context.read<ProfilesBloc>().add(RefreshProfiles());
+              return Future(() => null);
+            }),
+            child: _buildProfileList(context, state),
+          ),
+          floatingActionButton: SingleOrMultipleFloatingActionButtons(
+              infos: _createActionButtonInfoList(context)),
+          bottomNavigationBar: BottomNavigationBar(
+              items: const <BottomNavigationBarItem>[
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.home),
+                  label: 'Home',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.account_circle),
+                  label: 'Mon profil',
                 ),
               ],
-            ),
-            body: RefreshIndicator(
-              onRefresh: (() {
-                context.read<ProfilesBloc>().add(RefreshProfiles());
-                return Future(() => null);
+              onTap: (int index) {
+                switch (index) {
+                  case 0:
+                    break;
+                  case 1:
+                    String jwt =
+                        context.read<AuthenticationBloc>().state.user.jwt ?? '';
+                    context
+                        .read<ElpmiProfileBloc>()
+                        .add(ElpmiProfileFetchRequested(jwt));
+                    PopulatedElpmiProfile elpmiProfileState = context
+                        .read<ElpmiProfileBloc>()
+                        .state as PopulatedElpmiProfile;
+                    ElpmiProfile elpmiProfile = elpmiProfileState.elpmiProfile;
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) => AlertDialog(
+                        // content: Text(jwt),
+                        content: Text(
+                            '${elpmiProfile.uid}: ${elpmiProfile.name} ${elpmiProfile.streetNum} ${elpmiProfile.street} ${elpmiProfile.zipCode} ${elpmiProfile.city}'),
+                        actions: <TextButton>[
+                          TextButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: const Text('Close'),
+                          )
+                        ],
+                      ),
+                    );
+                    break;
+                }
               }),
-              child: _buildProfileList(context, state),
-            ),
-            floatingActionButton: SingleOrMultipleFloatingActionButtons(
-                infos: _createActionButtonInfoList(context)));
+        );
       },
     );
 

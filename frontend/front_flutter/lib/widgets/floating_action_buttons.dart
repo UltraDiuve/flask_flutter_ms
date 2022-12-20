@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
 class FloatingActionButtonInfo {
-  late final String label;
-  late final Icon icon;
-  late final void Function() onPressed;
+  final String label;
+  final Icon icon;
+  final void Function() onPressed;
 
   FloatingActionButtonInfo({
     required this.label,
